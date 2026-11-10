@@ -17,6 +17,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 
 - **OAuth tokens are stored in the OS keychain** (macOS Keychain, Windows Credential Manager, Linux Secret Service) through `@napi-rs/keyring`, one item per account: service `gdocs-mcp`, account = the email. An existing token file is moved on first use: copied in, read back and compared, and only then deleted; if any step fails the file stays and keeps working. A refreshed token goes back to the store it came from. Where there is no credential store the server keeps using `~/.config/gdocs-mcp/tokens/` and says so once on stderr. `GDOCS_TOKEN_STORE=keychain` makes a missing keychain an error, and `GDOCS_TOKEN_STORE=file` keeps the old behaviour. `~/.config/gdocs-mcp/keychain-accounts.json` lists the keychain accounts for `list_accounts` (emails only). On Linux only the Secret Service is used, never the kernel keyring, which loses its contents on reboot.
+- A new table fits the page. Docs' `insertTable` now gives every column a fixed width that ignores the page (175pt each from three columns on, so four columns were 700pt on a 468pt text width and overhung both margins), and a new table read back as an HTML `<table>` with those widths instead of the pipe table that was written. A new table's columns are now evenly distributed, as in a table made in Docs, so it spans the text width of its page, header or footer and a pipe table reads back as written. A table added with `suggest` keeps Docs' widths: Docs cannot suggest a column width (#73).
 
 ## [1.0.0] — 2026-10-30
 
