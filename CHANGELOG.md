@@ -9,6 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Fixed
 
 - **Requests to Google no longer fail with `Invalid response body … Premature close` on some Node releases.** `googleapis` 144 and `google-auth-library` 9 send HTTP through `gaxios` 6, which uses `node-fetch` 2. A Node security release (22.23.0, 24.17.0, 26.x) put a `data` listener on idle keep-alive sockets, and `node-fetch` 2 reads that as a body cut short, so a request on a reused socket failed, `add-account` and token refresh included ([nodejs/node#63989](https://github.com/nodejs/node/issues/63989)). Moved to `googleapis` 176 and `google-auth-library` 10.5, which use `gaxios` 7. CI now also runs Node 24 and 26.
+- `drive` `cp` and `mv` to a destination that does not exist yet, written with the `~` root (`~/New name`), no longer fail with `Destination folder "~/~" does not exist`: `~` was split off as if it were a folder name. `mkdir -p ~/shared/<drive>/…` had the same slip and named the wrong shared drive. `/` and `~` now behave alike in every `drive` command.
 
 ## [1.0.0] — 2026-10-30
 
